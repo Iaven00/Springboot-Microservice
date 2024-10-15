@@ -32,15 +32,17 @@ public class UserService {
         if (user == null) {
             log.error("User not found for userId: {}", userId);
         }
-        Department department =
+        else{
+            Department department =
                 restTemplate.getForObject("http://DEPARTMENT-SERVICE/departments/" + user.getDepartmentId()
                         ,Department.class);
-
-        if (department == null) {
-            log.error("Department not found for departmentId: {}", user.getDepartmentId());
+            
+            if (department == null) {
+                log.error("Department not found for departmentId: {}", user.getDepartmentId());
+            }
+            vo.setUser(user);
+            vo.setDepartment(department);
         }
-        vo.setUser(user);
-        vo.setDepartment(department);
 
         return  vo;
     }
