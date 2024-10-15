@@ -25,7 +25,15 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseTemplateVO getUserWithDepartment(@PathVariable("id") Long userId) {
         log.info("Inside getUserWithDepartment of UserController");
-        return userService.getUserWithDepartment(userId);
+        try {
+            return userService.getUserWithDepartment(userId);
+        } catch (RuntimeException e) {
+            log.error("Error occurred while acquiring the user: ", e );
+            ResponseTemplateVO errorResponse = new ResponseTemplateVO();
+            errorResponse.setDepartment(null);
+            errorResponse.setUser(null);
+            return errorResponse;
+        }
     }
 
 

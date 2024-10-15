@@ -29,10 +29,16 @@ public class UserService {
         ResponseTemplateVO vo = new ResponseTemplateVO();
         User user = userRepository.findByUserId(userId);
 
+        if (user == null) {
+            log.error("User not found for userId: {}", userId);
+        }
         Department department =
                 restTemplate.getForObject("http://DEPARTMENT-SERVICE/departments/" + user.getDepartmentId()
                         ,Department.class);
 
+        if (department == null) {
+            log.error("Department not found for departmentId: {}", user.getDepartmentId());
+        }
         vo.setUser(user);
         vo.setDepartment(department);
 
